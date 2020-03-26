@@ -8,31 +8,31 @@
   <fragment
     android:id="@+id/nav_events"
     android:label="@string/title_events"
-    android:name="edu.cnm.deepdive.homestead.ui.home.HomeFragment"
-    tools:layout="@layout/fragment_home"/>
+    android:name="edu.cnm.deepdive.homestead.controller.EventsFragment"
+    tools:layout="@layout/fragment_events"/>
 
   <fragment
     android:id="@+id/nav_agencies"
     android:label="@string/title_agencies"
-    android:name="edu.cnm.deepdive.homestead.ui.gallery.GalleryFragment"
-    tools:layout="@layout/fragment_gallery"/>
+    android:name="edu.cnm.deepdive.homestead.controller.AgenciesFragment"
+    tools:layout="@layout/fragment_agencies"/>
 
   <fragment
     android:id="@+id/nav_resources"
     android:label="@string/title_resources"
-    android:name="edu.cnm.deepdive.homestead.ui.slideshow.SlideshowFragment"
-    tools:layout="@layout/fragment_slideshow"/>
+    android:name="edu.cnm.deepdive.homestead.controller.ResourcesFragment"
+    tools:layout="@layout/fragment_resources"/>
 
   <fragment
     android:id="@+id/nav_weather"
     android:label="@string/title_weather"
-    android:name="edu.cnm.deepdive.homestead.ui.tools.ToolsFragment"
-    tools:layout="@layout/fragment_tools"/>
+    android:name="edu.cnm.deepdive.homestead.controller.WeatherFragment"
+    tools:layout="@layout/fragment_weather"/>
 
   <fragment
     android:id="@+id/nav_settings"
     android:label="@string/title_settings"
-    android:name="edu.cnm.deepdive.homestead.ui.share.ShareFragment"
-    tools:layout="@layout/fragment_share"/>
+    android:name="edu.cnm.deepdive.homestead.controller.SettingsFragment"
+    tools:layout="@layout/fragment_settings"/>
 
 </navigation>
