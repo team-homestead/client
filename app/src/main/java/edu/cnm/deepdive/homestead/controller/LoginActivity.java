@@ -6,7 +6,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import edu.cnm.deepdive.homestead.service.GoogleSignInService;
-import edu.cnm.deepdive.homestead.MainActivity;
 import edu.cnm.deepdive.homestead.R;
 
 public class LoginActivity extends AppCompatActivity {

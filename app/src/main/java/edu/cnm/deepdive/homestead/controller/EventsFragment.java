@@ -11,19 +11,19 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import edu.cnm.deepdive.homestead.R;
-import edu.cnm.deepdive.homestead.ui.home.HomeViewModel;
+import edu.cnm.deepdive.homestead.viewmodel.EventsViewModel;
 
 public class EventsFragment extends Fragment {
 
-    private HomeViewModel homeViewModel;
+    private EventsViewModel eventsViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
         ViewGroup container, Bundle savedInstanceState) {
-        homeViewModel =
-            ViewModelProviders.of(this).get(HomeViewModel.class);
+        eventsViewModel =
+            ViewModelProviders.of(this).get(EventsViewModel.class);
         View root = inflater.inflate(R.layout.fragment_events, container, false);
-        final TextView textView = root.findViewById(R.id.text_home);
-        homeViewModel.getText().observe(this, new Observer<String>() {
+        final TextView textView = root.findViewById(R.id.text_events);
+        eventsViewModel.getText().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);
