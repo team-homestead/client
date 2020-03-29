@@ -1,6 +1,9 @@
 package edu.cnm.deepdive.homestead.controller;
 
 import android.content.Intent;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,9 +25,17 @@ public class LoginActivity extends AppCompatActivity {
         .addOnSuccessListener((account) -> switchToMain())
         .addOnFailureListener((ex) -> {
           setContentView(R.layout.activity_login);
-          findViewById(R.id.sign_in).setOnClickListener((v) ->
+          findViewById(R.id.sign_in_button).setOnClickListener((v) ->
               repository.startSignIn(this, LOGIN_REQUEST_CODE));
         });
+   /* Button button = (Button) findViewById(R.id.skip_button);
+    button.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+        startActivity(intent);
+      }
+    }); */
   }
 
   @Override
@@ -42,6 +53,11 @@ public class LoginActivity extends AppCompatActivity {
   private void switchToMain() {
     Intent intent = new Intent(this, MainActivity.class);
     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+    startActivity(intent);
+  }
+
+  public void skipToMain(View view) {
+    Intent intent = new Intent(this, MainActivity.class);
     startActivity(intent);
   }
 
