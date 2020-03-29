@@ -28,14 +28,6 @@ public class LoginActivity extends AppCompatActivity {
           findViewById(R.id.sign_in_button).setOnClickListener((v) ->
               repository.startSignIn(this, LOGIN_REQUEST_CODE));
         });
-   /* Button button = (Button) findViewById(R.id.skip_button);
-    button.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-        startActivity(intent);
-      }
-    }); */
   }
 
   @Override

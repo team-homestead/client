@@ -3,31 +3,45 @@
   xmlns:tools="http://schemas.android.com/tools"
   package="edu.cnm.deepdive.homestead">
 
-  <uses-permission android:name="android.permission.INTERNET"/>
   <application
-    android:name=".HomesteadApplication"
-    android:usesCleartextTraffic="true"
     android:allowBackup="false"
     android:icon="@mipmap/ic_launcher"
     android:label="@string/app_name"
+    android:name=".HomesteadApplication"
     android:roundIcon="@mipmap/ic_launcher_round"
     android:supportsRtl="true"
     android:theme="@style/AppTheme"
+    android:usesCleartextTraffic="true"
     tools:ignore="GoogleAppIndexingWarning">
+    <activity
+      android:label="@string/title_activity_settings"
+      android:name=".controller.SettingsActivity">
+    </activity>
+    <!--
+    <activity android:name=".controller.SearchableActivity">
+      <intent-filter>
+        <action
+          android:name="android.intent.action.SEARCH"/>
+      </intent-filter>
+      <meta-data
+        android:name="android.app.searchable"
+        android:resource="@xml/searchable"/>
+    </activity>
+        -->
     <activity
       android:label="@string/app_name"
       android:name=".controller.MainActivity"
       android:theme="@style/AppTheme.NoActionBar">
     </activity>
-    <activity
-      android:name=".controller.LoginActivity">
+    <activity android:name=".controller.LoginActivity">
       <intent-filter>
         <action android:name="android.intent.action.MAIN"/>
 
         <category android:name="android.intent.category.LAUNCHER"/>
       </intent-filter>
-
     </activity>
   </application>
+
+  <uses-permission android:name="android.permission.INTERNET"/>
 
 </manifest>
