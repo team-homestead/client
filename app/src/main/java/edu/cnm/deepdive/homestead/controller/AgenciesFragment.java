@@ -11,19 +11,19 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import edu.cnm.deepdive.homestead.R;
-import edu.cnm.deepdive.homestead.viewmodel.AgenciesViewModel;
+import edu.cnm.deepdive.homestead.viewmodel.AgencyViewModel;
 
 public class AgenciesFragment extends Fragment {
 
-    private AgenciesViewModel agenciesViewModel;
+    private AgencyViewModel agencyViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
         ViewGroup container, Bundle savedInstanceState) {
-        agenciesViewModel =
-            ViewModelProviders.of(this).get(AgenciesViewModel.class);
+        agencyViewModel =
+            ViewModelProviders.of(this).get(AgencyViewModel.class);
         View root = inflater.inflate(R.layout.fragment_agencies, container, false);
         final TextView textView = root.findViewById(R.id.text_events);
-        agenciesViewModel.getText().observe(this, new Observer<String>() {
+        agencyViewModel.getText().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);

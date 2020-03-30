@@ -1,0 +1,69 @@
+package edu.cnm.deepdive.homestead.model;
+
+import com.google.gson.annotations.Expose;
+import java.net.URL;
+import java.util.UUID;
+
+public class Agency implements Favorites {
+
+  @Expose
+  private UUID id;
+
+  @Expose
+  private AgencyType agencyType;
+
+  @Expose
+  private User[] users;
+
+  @Expose
+  private Service[] services;
+
+  @Expose
+  private URL href;
+
+  public UUID getId() {
+    return id;
+  }
+
+  public void setId(UUID id) {
+    this.id = id;
+  }
+
+  public AgencyType getAgencyType() {
+    return agencyType;
+  }
+
+  public void setAgencyType(AgencyType agencyType) {
+    this.agencyType = agencyType;
+  }
+
+  public User[] getUsers() {
+    return users;
+  }
+
+  public void setUsers(User[] users) {
+    this.users = users;
+  }
+
+  public Service[] getServices() {
+    return services;
+  }
+
+  public void setServices(Service[] services) {
+    this.services = services;
+  }
+
+  public URL getHref() {
+    return href;
+  }
+
+  public void setHref(URL href) {
+    this.href = href;
+  }
+
+  public enum AgencyType {
+    GOVERNMENT, OTHER, PUBLIC, RELIGIOUS;
+
+  }
+
+}
