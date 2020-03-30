@@ -11,7 +11,7 @@ import edu.cnm.deepdive.homestead.R;
 import java.util.ArrayList;
 import java.util.List;
 
-/* public class SearchableActivity extends ListActivity {
+public class SearchableActivity extends ListActivity {
 
   protected SQLiteDatabase database;
 
@@ -31,18 +31,18 @@ import java.util.List;
     List<String> result = new ArrayList<String>();
 
     Cursor cursor = database.query(
-        "agency",
-        new String[] { "_id" },
-        "name like '%?%' or type like '%?%'",
+        "user",
+        new String[] { "_agency" },
+        "name like '%?%' or agencyType like '%?%'",
         new String[] { query, query, query },
         null,
         null,
         null
         );
-    while (c.moveToNext()) {
-        result.add(c.getString(0));
+    while (cursor.moveToNext()) {
+        result.add(cursor.getString(0));
   }
-  c.close();
+  cursor.close();
   return result;
   }
-}*/
+}
