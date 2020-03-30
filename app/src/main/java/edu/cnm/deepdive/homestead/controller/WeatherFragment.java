@@ -11,19 +11,19 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import edu.cnm.deepdive.homestead.R;
-import edu.cnm.deepdive.homestead.ui.tools.ToolsViewModel;
+import edu.cnm.deepdive.homestead.viewmodel.WeatherViewModel;
 
 public class WeatherFragment extends Fragment {
 
-    private ToolsViewModel toolsViewModel;
+    private WeatherViewModel weatherViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
         ViewGroup container, Bundle savedInstanceState) {
-        toolsViewModel =
-            ViewModelProviders.of(this).get(ToolsViewModel.class);
+        weatherViewModel =
+            ViewModelProviders.of(this).get(WeatherViewModel.class);
         View root = inflater.inflate(R.layout.fragment_weather, container, false);
-        final TextView textView = root.findViewById(R.id.text_tools);
-        toolsViewModel.getText().observe(this, new Observer<String>() {
+        final TextView textView = root.findViewById(R.id.text_weather);
+        weatherViewModel.getText().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);

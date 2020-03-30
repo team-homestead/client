@@ -11,19 +11,19 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import edu.cnm.deepdive.homestead.R;
-import edu.cnm.deepdive.homestead.ui.slideshow.SlideshowViewModel;
+import edu.cnm.deepdive.homestead.viewmodel.ResourcesViewModel;
 
 public class ResourcesFragment extends Fragment {
 
-  private SlideshowViewModel slideshowViewModel;
+  private ResourcesViewModel resourcesViewModel;
 
   public View onCreateView(@NonNull LayoutInflater inflater,
       ViewGroup container, Bundle savedInstanceState) {
-    slideshowViewModel =
-        ViewModelProviders.of(this).get(SlideshowViewModel.class);
+    resourcesViewModel =
+        ViewModelProviders.of(this).get(ResourcesViewModel.class);
     View root = inflater.inflate(R.layout.fragment_resources, container, false);
-    final TextView textView = root.findViewById(R.id.text_slideshow);
-    slideshowViewModel.getText().observe(this, new Observer<String>() {
+    final TextView textView = root.findViewById(R.id.text_resources);
+    resourcesViewModel.getText().observe(this, new Observer<String>() {
       @Override
       public void onChanged(@Nullable String s) {
         textView.setText(s);

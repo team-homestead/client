@@ -1,16 +1,16 @@
-package edu.cnm.deepdive.homestead.ui.share;
+package edu.cnm.deepdive.homestead.viewmodel;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class ShareViewModel extends ViewModel {
+public class WeatherViewModel extends ViewModel {
 
   private MutableLiveData<String> mText;
 
-  public ShareViewModel() {
+  public WeatherViewModel() {
     mText = new MutableLiveData<>();
-    mText.setValue("This is share fragment");
+    mText.setValue("This is the weather fragment");
   }
 
   public LiveData<String> getText() {
