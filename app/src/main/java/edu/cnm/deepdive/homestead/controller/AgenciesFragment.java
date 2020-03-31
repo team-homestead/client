@@ -10,23 +10,17 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
-import androidx.annotation.Nullable;
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.RecyclerView;
 import edu.cnm.deepdive.homestead.R;
 import edu.cnm.deepdive.homestead.model.Agency;
 import edu.cnm.deepdive.homestead.view.FavoritesListAdapter;
-import edu.cnm.deepdive.homestead.viewmodel.AgencyViewModel;
+import edu.cnm.deepdive.homestead.view.FavoritesListAdapter.OnAgencyClickListener;
+import edu.cnm.deepdive.homestead.view.FavoritesListAdapter.OnFavoriteClickListener;
 import java.util.List;
-import java.util.UUID;
 
 public class AgenciesFragment extends Fragment implements
-    OnItemClickListener, OnItemLongClickListener {
+    OnItemClickListener, OnItemLongClickListener, OnAgencyClickListener, OnFavoriteClickListener {
 
     public static final String ARG_ITEM_ID = "agency_list";
 
@@ -49,7 +43,8 @@ public class AgenciesFragment extends Fragment implements
         LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_agencies, container, false);
         findViewsById(view);
-        agencyListAdapter = new FavoritesListAdapter(activity, agencies);
+        agencyListAdapter = new FavoritesListAdapter(activity, agencies, this,
+            this);
         agencyListView.setAdapter(agencyListAdapter);
         agencyListView.setOnItemClickListener(this);
         agencyListView.setOnItemLongClickListener(this);
@@ -94,4 +89,13 @@ public class AgenciesFragment extends Fragment implements
         super.onResume();
     }
 
+    @Override
+    public void onAgencyClick(int position, View view, Agency agency) {
+
+    }
+
+    @Override
+    public void onFavoriteClick(int position, View view, Agency agency) {
+
+    }
 }

@@ -16,13 +16,19 @@ import java.util.List;
 
 public class FavoritesListAdapter extends ArrayAdapter<Agency> {
 
-  public static final String SERVICE_TYPE_DELIMITER = ", ";
-  private Context context;
-  SharedPreference sharedPreference;
+  private static final String SERVICE_TYPE_DELIMITER = ", ";
+  private final Context context;
+  private final SharedPreference sharedPreference;
+  private final OnAgencyClickListener clickListener;
+  private final OnFavoriteClickListener favoriteListener;
 
-  public FavoritesListAdapter(Context context, List<Agency> agencies) {
+  public FavoritesListAdapter(Context context, List<Agency> agencies,
+      OnAgencyClickListener clickListener,
+      OnFavoriteClickListener favoriteListener) {
     super(context, R.layout.item_agency, agencies);
     this.context = context;
+    this.clickListener = clickListener;
+    this.favoriteListener = favoriteListener;
     sharedPreference = new SharedPreference();
   }
 
@@ -70,8 +76,8 @@ public class FavoritesListAdapter extends ArrayAdapter<Agency> {
       favoriteImg.setImageResource(R.drawable.ic_heart_grey);
       favoriteImg.setTag("grey");
     }
-    convertView.setOnClickListener();
-    favoriteImg.setOnClickListener();
+    convertView.setOnClickListener((v) -> clickListener.onAgencyClick(position, v, agency));
+    favoriteImg.setOnClickListener((v) -> favoriteListener.onFavoriteClick(position, v, agency));
     return convertView;
   }
 

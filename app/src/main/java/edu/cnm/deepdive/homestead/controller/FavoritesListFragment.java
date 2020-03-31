@@ -2,11 +2,7 @@ package edu.cnm.deepdive.homestead.controller;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,26 +10,22 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import com.google.gson.Gson;
 import edu.cnm.deepdive.homestead.R;
 import edu.cnm.deepdive.homestead.model.Agency;
 import edu.cnm.deepdive.homestead.view.FavoritesListAdapter;
 import edu.cnm.deepdive.homestead.viewmodel.AgencyViewModel;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
 
-public class FavoritesListFragment extends Fragment {
+public class FavoritesListFragment extends Fragment
+    implements FavoritesListAdapter.OnAgencyClickListener,
+    FavoritesListAdapter.OnFavoriteClickListener {
 
   public static final String ARG_ITEM_ID = "favorite_list";
 
@@ -68,38 +60,6 @@ public class FavoritesListFragment extends Fragment {
             getResources().getString(R.string.no_favorites_items),
             getResources().getString(R.string.no_favorites_msg));
       }
-
-      favoritesList.setOnItemClickListener(new OnItemClickListener() {
-        public void onItemClick(AdapterView<?> parent, View arg1, int position, long arg3) {
-
-        }
-      });
-
-      favoritesList.setOnItemLongClickListener(new OnItemLongClickListener() {
-
-        @Override
-        public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-          ImageButton button = (ImageButton) view.findViewById(R.id.agency_favorite_button);
-          String tag = button.getTag().toString();
-          if (tag.equalsIgnoreCase("grey")) {
-            sharedPreference.addFavorite(activity, favorites.get(position));
-            Toast.makeText(
-                activity, activity.getResources().getString(
-                    R.string.add_favr), Toast.LENGTH_SHORT).show();
-            button.setTag("red");
-            button.setImageResource(R.drawable.ic_heart_red);
-          } else {
-            sharedPreference.removeFavorite(activity, favorites.get(position));
-            button.setTag("grey");
-            button.setImageResource(R.drawable.ic_heart_grey);
-            favoritesListAdapter.remove(favorites.get(position));
-            Toast.makeText(
-                activity, activity.getResources().getString(
-                    R.string.remove_favr), Toast.LENGTH_SHORT).show();
-          }
-          return true;
-        }
-      });
     }
     return view;
   }
@@ -109,7 +69,8 @@ public class FavoritesListFragment extends Fragment {
     super.onViewCreated(view, savedInstanceState);
     AgencyViewModel viewModel = new ViewModelProvider(this).get(AgencyViewModel.class);
     viewModel.getAgencies().observe(getViewLifecycleOwner(), (agencies) -> {
-      FavoritesListAdapter adapter = new FavoritesListAdapter(getContext(), agencies);
+      FavoritesListAdapter adapter = new FavoritesListAdapter(getContext(), agencies, this,
+          this);
       favoritesList.setAdapter(adapter);
     });
   }
@@ -135,4 +96,30 @@ public class FavoritesListFragment extends Fragment {
     }
   }
 
+  @Override
+  public void onAgencyClick(int position, View view, Agency agency) {
+    //TODO Respond to click on Agency by displaying ?
+  }
+
+  @Override
+  public void onFavoriteClick(int position, View view, Agency agency) {
+    ImageButton button = (ImageButton) view;
+    String tag = button.getTag().toString();
+    if (tag.equalsIgnoreCase("grey")) {
+      sharedPreference.addFavorite(activity, agency);
+      Toast.makeText(
+          activity, activity.getResources().getString(
+              R.string.add_favr), Toast.LENGTH_SHORT).show();
+      button.setTag("red");
+      button.setImageResource(R.drawable.ic_heart_red);
+    } else {
+      sharedPreference.removeFavorite(activity, agency);
+      button.setTag("grey");
+      button.setImageResource(R.drawable.ic_heart_grey);
+      favoritesListAdapter.remove(agency);
+      Toast.makeText(
+          activity, activity.getResources().getString(
+              R.string.remove_favr), Toast.LENGTH_SHORT).show();
+    }
+  }
 }
