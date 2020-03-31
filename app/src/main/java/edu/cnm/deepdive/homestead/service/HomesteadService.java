@@ -29,13 +29,13 @@ import retrofit2.http.Query;
 public interface HomesteadService {
 
   @GET("agencies")
-  Single<List<Agency>> getAllAgencies(@Header("Authorization") String oauthHeader);
+  Single<List<Agency>> getAllAgencies();
 
   @GET("agencies/{id}")
-  Single<Agency> getAgency(@Header("Authorization") String oauthHeader, @Path("id") UUID id);
+  Single<Agency> getAgency(@Path("id") UUID id);
 
   @GET("services")
-  Single<List<Service>> getAllServices(@Header("Authorization") String oauthHeader);
+  Single<List<Service>> getAllServices();
 
   @POST("agencies")
   Single<Agency> postAgency(@Header("Authorization") String oauthHeader, @Body Agency agency);
@@ -72,6 +72,7 @@ public interface HomesteadService {
           .addConverterFactory(GsonConverterFactory.create(gson))
           .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
           .client(client)
+          .baseUrl(BuildConfig.BASE_URL)
           .build();
       INSTANCE = retrofit.create(HomesteadService.class);
     }

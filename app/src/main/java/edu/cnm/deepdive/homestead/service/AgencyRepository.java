@@ -37,13 +37,13 @@ public class AgencyRepository {
     return InstanceHolder.INSTANCE;
   }
 
-  public Single<List<Agency>> getAllAgencies(String token) {
-    return proxy.getAllAgencies(String.format(OAUTH_HEADER_FORMAT, token))
+  public Single<List<Agency>> getAllAgencies() {
+    return proxy.getAllAgencies()
         .subscribeOn(Schedulers.from(networkPool));
   }
 
-  public Single<List<Service>> getAllServices(String token) {
-    return proxy.getAllServices(String.format(OAUTH_HEADER_FORMAT, token))
+  public Single<List<Service>> getAllServices() {
+    return proxy.getAllServices()
         .subscribeOn(Schedulers.from(networkPool));
   }
 
@@ -70,22 +70,9 @@ public class AgencyRepository {
     }
   }
 
-  public Single<Agency> get(String token, UUID id) {
-    return proxy.getAgency(String.format(OAUTH_HEADER_FORMAT, token), id)
+  public Single<Agency> get(UUID id) {
+    return proxy.getAgency(id)
         .subscribeOn(Schedulers.from(networkPool));
-  }
-
-  public Single<List<Content>> getAllContents(String token) {
-    return getAllServices(token)
-        .subscribeOn(Schedulers.io())
-        .map((services) -> {
-          List<Content> combined = new ArrayList<>();
-          for (Service service : services) {
-            combined.add(service);
-            Collections.addAll(combined, service.getAgency());
-          }
-          return combined;
-        });
   }
 
   private static class InstanceHolder {

@@ -21,6 +21,9 @@ public class Agency implements Content {
   private UUID id;
 
   @Expose
+  private String name;
+
+  @Expose
   private AgencyType agencyType;
 
   @Expose
@@ -38,6 +41,14 @@ public class Agency implements Content {
 
   public void setId(UUID id) {
     this.id = id;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
   }
 
   public AgencyType getAgencyType() {

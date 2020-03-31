@@ -19,11 +19,15 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import com.google.gson.Gson;
 import edu.cnm.deepdive.homestead.R;
 import edu.cnm.deepdive.homestead.model.Agency;
 import edu.cnm.deepdive.homestead.view.FavoritesListAdapter;
+import edu.cnm.deepdive.homestead.viewmodel.AgencyViewModel;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -49,7 +53,8 @@ public class FavoritesListFragment extends Fragment {
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
-    View view = inflater.inflate(R.layout.fragment_agencies, container, false);
+    View view = inflater.inflate(R.layout.fragment_favorites_list, container, false);
+    favoritesList = view.findViewById(R.id.favorites_list);
     sharedPreference = new SharedPreference();
     favorites = sharedPreference.getFavorites(activity);
 
@@ -64,46 +69,49 @@ public class FavoritesListFragment extends Fragment {
             getResources().getString(R.string.no_favorites_msg));
       }
 
-      favoritesList = (ListView) view.findViewById(R.id.agencies_list);
+      favoritesList.setOnItemClickListener(new OnItemClickListener() {
+        public void onItemClick(AdapterView<?> parent, View arg1, int position, long arg3) {
 
-      if (favorites != null) {
-        favoritesListAdapter = new FavoritesListAdapter(activity, favorites);
-        favoritesList.setAdapter(favoritesListAdapter);
+        }
+      });
 
-        favoritesList.setOnItemClickListener(new OnItemClickListener() {
-          public void onItemClick(AdapterView<?> parent, View arg1, int position, long arg3) {
+      favoritesList.setOnItemLongClickListener(new OnItemLongClickListener() {
 
+        @Override
+        public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+          ImageButton button = (ImageButton) view.findViewById(R.id.agency_favorite_button);
+          String tag = button.getTag().toString();
+          if (tag.equalsIgnoreCase("grey")) {
+            sharedPreference.addFavorite(activity, favorites.get(position));
+            Toast.makeText(
+                activity, activity.getResources().getString(
+                    R.string.add_favr), Toast.LENGTH_SHORT).show();
+            button.setTag("red");
+            button.setImageResource(R.drawable.ic_heart_red);
+          } else {
+            sharedPreference.removeFavorite(activity, favorites.get(position));
+            button.setTag("grey");
+            button.setImageResource(R.drawable.ic_heart_grey);
+            favoritesListAdapter.remove(favorites.get(position));
+            Toast.makeText(
+                activity, activity.getResources().getString(
+                    R.string.remove_favr), Toast.LENGTH_SHORT).show();
           }
-        });
-
-        favoritesList.setOnItemLongClickListener(new OnItemLongClickListener() {
-
-              @Override
-              public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                ImageButton button = (ImageButton) view.findViewById(R.id.agency_favorite_button);
-                String tag = button.getTag().toString();
-                if (tag.equalsIgnoreCase("grey")) {
-                  sharedPreference.addFavorite(activity, favorites.get(position));
-                  Toast.makeText(
-                      activity, activity.getResources().getString(
-                          R.string.add_favr), Toast.LENGTH_SHORT).show();
-                  button.setTag("red");
-                  button.setImageResource(R.drawable.ic_heart_red);
-                } else {
-                  sharedPreference.removeFavorite(activity, favorites.get(position));
-                  button.setTag("grey");
-                  button.setImageResource(R.drawable.ic_heart_grey);
-                  favoritesListAdapter.remove(favorites.get(position));
-                  Toast.makeText(
-                      activity, activity.getResources().getString(
-                          R.string.remove_favr), Toast.LENGTH_SHORT).show();
-                }
-                return true;
-              }
-            });
-      }
+          return true;
+        }
+      });
     }
     return view;
+  }
+
+  @Override
+  public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    super.onViewCreated(view, savedInstanceState);
+    AgencyViewModel viewModel = new ViewModelProvider(this).get(AgencyViewModel.class);
+    viewModel.getAgencies().observe(getViewLifecycleOwner(), (agencies) -> {
+      FavoritesListAdapter adapter = new FavoritesListAdapter(getContext(), agencies);
+      favoritesList.setAdapter(adapter);
+    });
   }
 
   public void showAlert(String title, String message) {
@@ -127,10 +135,4 @@ public class FavoritesListFragment extends Fragment {
     }
   }
 
-  @Override
-  public void onResume() {
-    getActivity().setTitle(R.string.favorites);
-    getActivity().getActionBar().setTitle(R.string.favorites);
-    super.onResume();
-  }
 }

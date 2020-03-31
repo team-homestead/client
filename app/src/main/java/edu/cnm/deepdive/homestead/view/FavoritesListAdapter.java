@@ -11,18 +11,18 @@ import android.widget.TextView;
 import edu.cnm.deepdive.homestead.R;
 import edu.cnm.deepdive.homestead.controller.SharedPreference;
 import edu.cnm.deepdive.homestead.model.Agency;
+import edu.cnm.deepdive.homestead.model.Service;
 import java.util.List;
 
 public class FavoritesListAdapter extends ArrayAdapter<Agency> {
 
+  public static final String SERVICE_TYPE_DELIMITER = ", ";
   private Context context;
-  List<Agency> agencies;
   SharedPreference sharedPreference;
 
   public FavoritesListAdapter(Context context, List<Agency> agencies) {
     super(context, R.layout.item_agency, agencies);
     this.context = context;
-    this.agencies = agencies;
     sharedPreference = new SharedPreference();
   }
 
@@ -38,57 +38,40 @@ public class FavoritesListAdapter extends ArrayAdapter<Agency> {
   }
 
   @Override
-  public int getCount() {
-    return agencies.size();
-  }
-
-  @Override
-  public Agency getItem(int position) {
-    return agencies.get(position);
-  }
-
-  @Override
-  public long getItemId(int position) {
-    return 0;
-  }
-
-  @Override
   public View getView(int position, View convertView, ViewGroup parent) {
-    ViewHolder holder = null;
+    Agency agency = getItem(position);
     if (convertView == null) {
       LayoutInflater inflater = (LayoutInflater) context
           .getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
       convertView = inflater.inflate(R.layout.item_agency, null);
-      holder = new ViewHolder();
-   /*   holder.agencyNameText = (TextView) convertView.findViewById(R.id.agency_name_title);
-      holder.addressText =  (TextView) convertView.findViewById(R.id.agency_address_text);
-      holder.phoneNumberText = (TextView) convertView.findViewById(R.id.agency_phone_number_text);
-      holder.emailText = (TextView) convertView.findViewById(R.id.agency_email_text);
-      holder.agencyTypeText = (TextView) convertView.findViewById(R.id.agency_type_text);
-      holder.serviceTypeText = (TextView) convertView.findViewById(R.id.agency_service_type);
-      holder.agencyDescriptionText = (TextView) convertView.findViewById(R.id.agency_description);
-      holder.favoriteImg = (ImageButton) convertView.findViewById(R.id.agency_favorite_button); */
-
-      convertView.setTag(holder);
-    } else {
-      holder = (ViewHolder) convertView.getTag();
     }
-    Agency agency = (Agency) getItem(position);
- /*   holder.agencyNameText.setText(agency.getUsers());
-    holder.addressText.setText(agency.getAddress());
-    holder.phoneNumberText.setText(agency.getPhoneNumber());
-    holder.emailText.setText(agency.getEmail());
-    holder.agencyTypeText.setText(agency.getAgencyType());
-    holder.serviceTypeText.setText(agency.getServices());
-    holder.agencyDescriptionText.setText(agency.getDescription()); */
-
+    TextView agencyNameText = convertView.findViewById(R.id.agency_name_title);
+    TextView addressText = convertView.findViewById(R.id.agency_address);
+    TextView phoneNumberText = convertView.findViewById(R.id.agency_phone_number);
+    TextView emailText = convertView.findViewById(R.id.agency_email);
+    TextView agencyTypeText = convertView.findViewById(R.id.agency_type);
+    TextView serviceTypeText = convertView.findViewById(R.id.agency_service_type);
+    TextView agencyDescriptionText = convertView.findViewById(R.id.agency_description);
+    ImageButton favoriteImg = convertView.findViewById(R.id.agency_favorite_button);
+    agencyNameText.setText(agency.getName());
+    if (agency.getAgencyType() != null) {
+      agencyTypeText.setText(agency.getAgencyType().toString());
+    }
+    StringBuilder builder = new StringBuilder();
+    for (Service service : agency.getServices()) {
+      builder.append(service.getServiceType().toString()).append(SERVICE_TYPE_DELIMITER);
+    }
+    serviceTypeText.setText(builder
+        .substring(0, Math.max(0, builder.length() - SERVICE_TYPE_DELIMITER.length())));
     if (checkFavoriteItem(agency)) {
-      holder.favoriteImg.setImageResource(R.drawable.ic_heart_red);
-      holder.favoriteImg.setTag("red");
+      favoriteImg.setImageResource(R.drawable.ic_heart_red);
+      favoriteImg.setTag("red");
     } else {
-      holder.favoriteImg.setImageResource(R.drawable.ic_heart_grey);
-      holder.favoriteImg.setTag("grey");
+      favoriteImg.setImageResource(R.drawable.ic_heart_grey);
+      favoriteImg.setTag("grey");
     }
+    convertView.setOnClickListener();
+    favoriteImg.setOnClickListener();
     return convertView;
   }
 
@@ -106,18 +89,12 @@ public class FavoritesListAdapter extends ArrayAdapter<Agency> {
     return check;
   }
 
-  @Override
-  public void add(Agency agency) {
-    super.add(agency);
-    agencies.add(agency);
-    notifyDataSetChanged();
+  public interface OnAgencyClickListener {
+    void onAgencyClick(int position, View view, Agency agency);
   }
 
-  @Override
-  public void remove(Agency agency) {
-    super.remove(agency);
-    agencies.remove(agency);
-    notifyDataSetChanged();
+  public interface OnFavoriteClickListener {
+    void onFavoriteClick(int position, View view, Agency agency);
   }
 
 }

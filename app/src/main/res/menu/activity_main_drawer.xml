@@ -8,6 +8,11 @@
     android:checkableBehavior="single">
 
     <item
+      android:id="@+id/nav_favorites"
+      android:icon="@drawable/ic_heart_red"
+      android:title="@string/menu_favorites"/>
+
+    <item
       android:id="@+id/nav_events"
       android:icon="@drawable/ic_event"
       android:title="@string/menu_events"/>

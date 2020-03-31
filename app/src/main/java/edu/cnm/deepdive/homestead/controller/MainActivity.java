@@ -38,39 +38,6 @@ public class MainActivity extends AppCompatActivity {
     setContentView(R.layout.activity_main);
     setupNavigation();
 
-    FragmentManager fragmentManager = getSupportFragmentManager();
-
-    if (savedInstanceState != null) {
-      if (savedInstanceState.containsKey("content")) {
-        String content = savedInstanceState.getString("content");
-        if (content.equals(FavoritesListFragment.ARG_ITEM_ID)) {
-          if (fragmentManager.findFragmentByTag(FavoritesListFragment.ARG_ITEM_ID) != null) {
-            setFragmentTitle(R.string.favorites);
-            contentFragment = fragmentManager
-                .findFragmentByTag(FavoritesListFragment.ARG_ITEM_ID);
-          }
-        }
-      }
-      if (fragmentManager.findFragmentByTag(AgenciesFragment.ARG_ITEM_ID) != null) {
-       agenciesFragment = (AgenciesFragment) fragmentManager
-            .findFragmentByTag(AgenciesFragment.ARG_ITEM_ID);
-       contentFragment = agenciesFragment;
-      }
-    } else {
-      agenciesFragment = new AgenciesFragment();
-      setFragmentTitle(R.string.app_name);
-      switchContent(agenciesFragment, AgenciesFragment.ARG_ITEM_ID);
-    }
-  }
-
-  @Override
-  protected void onSaveInstanceState(Bundle outState) {
-    if (contentFragment instanceof FavoritesListFragment) {
-      outState.putString("content", FavoritesListFragment.ARG_ITEM_ID);
-    } else {
-      outState.putString("content", AgenciesFragment.ARG_ITEM_ID);
-    }
-    super.onSaveInstanceState(outState);
   }
 
   @Override
@@ -88,12 +55,7 @@ public class MainActivity extends AppCompatActivity {
   public boolean onOptionsItemSelected(@NonNull MenuItem item) {
     boolean handled = true;
     switch (item.getItemId()) {
-      case R.id.menu_favorites:
-        setFragmentTitle(R.string.favorites);
-        favoritesListFragment = new FavoritesListFragment();
-        switchContent(favoritesListFragment, FavoritesListFragment.ARG_ITEM_ID);
-        return true;
-      case R.id.sign_out:
+       case R.id.sign_out:
         signOut();
         break;
       default:
@@ -101,26 +63,6 @@ public class MainActivity extends AppCompatActivity {
         break;
     }
     return handled;
-  }
-
-  public void switchContent(Fragment fragment, String tag) {
-    FragmentManager fragmentManager = getSupportFragmentManager();
-    while (fragmentManager.popBackStackImmediate());
-    if (fragment != null) {
-      FragmentTransaction transaction = fragmentManager
-          .beginTransaction();
-      transaction.replace(R.id.agencies_list, fragment, tag);
-      if (!(fragment instanceof AgenciesFragment)) {
-        transaction.addToBackStack(tag);
-      }
-      transaction.commit();
-      contentFragment = fragment;
-    }
-  }
-
-  protected void setFragmentTitle(int recourseId) {
-    setTitle(recourseId);
-    getActionBar().setTitle(recourseId);
   }
 
   @Override
@@ -136,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
     DrawerLayout drawer = findViewById(R.id.drawer_layout);
     NavigationView navigationView = findViewById(R.id.nav_view);
     mAppBarConfiguration = new AppBarConfiguration.Builder(
-        R.id.nav_events, R.id.nav_agencies, R.id.nav_resources,
+        R.id.nav_favorites, R.id.nav_events, R.id.nav_agencies, R.id.nav_resources,
         R.id.nav_weather, R.id.nav_settings)
         .setDrawerLayout(drawer)
         .build();
