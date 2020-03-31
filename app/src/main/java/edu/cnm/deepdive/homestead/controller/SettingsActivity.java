@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceFragmentCompat;
 import edu.cnm.deepdive.homestead.R;
 
-
 public class SettingsActivity extends AppCompatActivity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {

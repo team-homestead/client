@@ -7,7 +7,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.OnLifecycleEvent;
 import androidx.lifecycle.ViewModel;
 import edu.cnm.deepdive.homestead.model.Agency;
-import edu.cnm.deepdive.homestead.model.Favorites;
+import edu.cnm.deepdive.homestead.model.Content;
 import edu.cnm.deepdive.homestead.model.Service;
 import edu.cnm.deepdive.homestead.service.AgencyRepository;
 import edu.cnm.deepdive.homestead.service.GoogleSignInService;
@@ -21,7 +21,7 @@ public class AgencyViewModel extends ViewModel implements LifecycleObserver {
     private MutableLiveData<Service> service;
     private MutableLiveData<List<Agency>> agencies;
     private MutableLiveData<List<Service>> services;
-    private MutableLiveData<List<Favorites>> favorites;
+    private MutableLiveData<List<Content>> contents;
     private final MutableLiveData<Throwable> throwable;
     private final AgencyRepository repository;
     private CompositeDisposable pending;
@@ -31,13 +31,13 @@ public class AgencyViewModel extends ViewModel implements LifecycleObserver {
         pending = new CompositeDisposable();
         agencies = new MutableLiveData<>();
         services = new MutableLiveData<>();
-        favorites = new MutableLiveData<>();
+        contents = new MutableLiveData<>();
         agency = new MutableLiveData<>();
         service = new MutableLiveData<>();
         throwable = new MutableLiveData<>();
         refreshAgencies();
         refreshServices();
-        refreshFavorites();
+        refreshContents();
     }
 
     public LiveData<Agency> getAgency() {
@@ -56,8 +56,8 @@ public class AgencyViewModel extends ViewModel implements LifecycleObserver {
         return services;
     }
 
-    public LiveData<List<Favorites>> getFavorites() {
-        return favorites;
+    public LiveData<List<Content>> getContents() {
+      return contents;
     }
 
     public LiveData<Throwable> getThrowable() {
@@ -86,7 +86,7 @@ public class AgencyViewModel extends ViewModel implements LifecycleObserver {
                 pending.add(
                     repository.getAllServices(account.getIdToken())
                         .subscribe(
-                            agencies::postValue,
+                            services::postValue,
                             throwable::postValue
                         )
                 );
@@ -94,31 +94,31 @@ public class AgencyViewModel extends ViewModel implements LifecycleObserver {
             .addOnFailureListener(throwable::postValue);
     }
 
-    public void refreshFavorites() {
-        throwable.postValue(null);
-        GoogleSignInService.getInstance().refresh()
-            .addOnSuccessListener((account) -> {
-                pending.add(
-                    repository.getAllFavorites(account.getIdToken())
-                        .subscribe(
-                            agencies::postValue,
-                            throwable::postValue
-                        )
-                );
-            })
-            .addOnFailureListener(throwable::postValue);
-    }
+  public void refreshContents() {
+    throwable.postValue(null);
+    GoogleSignInService.getInstance().refresh()
+        .addOnSuccessListener((account) -> {
+          pending.add(
+              repository.getAllContents(account.getIdToken())
+                  .subscribe(
+                      contents::postValue,
+                      throwable::postValue
+                  )
+          );
+        })
+        .addOnFailureListener(throwable::postValue);
+  }
 
     public void save(Agency agency) {
         throwable.setValue(null);
         GoogleSignInService.getInstance().refresh()
             .addOnSuccessListener((account) -> {
                 pending.add(
-                    repository.save(account.getIdToken(), agency)
+                    repository.saveAgency(account.getIdToken(), agency)
                         .subscribe(
                             () -> {
                                 this.agency.postValue(null);
-                                refreshFavorites();
+                                refreshContents();
                                 refreshAgencies();
                                 refreshServices();
                             },
@@ -134,11 +134,11 @@ public class AgencyViewModel extends ViewModel implements LifecycleObserver {
         GoogleSignInService.getInstance().refresh()
             .addOnSuccessListener((account) -> {
                 pending.add(
-                    repository.remove(account.getIdToken(), agency)
+                    repository.removeAgency(account.getIdToken(), agency)
                         .subscribe(
                             () -> {
                                 this.agency.postValue(null);
-                                refreshFavorites();
+                                refreshContents();
                                 refreshAgencies();
                             },
                             throwable::postValue
@@ -163,15 +163,16 @@ public class AgencyViewModel extends ViewModel implements LifecycleObserver {
             .addOnFailureListener(throwable::postValue);
     }
 
-    public void save(Service service) {
+  /*  public void save(Service service) {
         throwable.setValue(null);
         GoogleSignInService.getInstance().refresh()
             .addOnSuccessListener((account) -> {
                 pending.add(
-                    repository.save(account.getIdToken(), service)
+                    repository.saveService(account.getIdToken(), service)
                         .subscribe(
                             () -> {
                                 this.service.postValue(null);
+                                refreshContents();
                                 refreshAgencies();
                                 refreshServices();
                             },
@@ -187,11 +188,11 @@ public class AgencyViewModel extends ViewModel implements LifecycleObserver {
         GoogleSignInService.getInstance().refresh()
             .addOnSuccessListener((account) -> {
                 pending.add(
-                    repository.remove(account.getIdToken(), service)
+                    repository.removeAgency(account.getIdToken(), service)
                         .subscribe(
                             () -> {
                                 this.service.postValue(null);
-                                refreshFavorites();
+                                refreshContents();
                                 refreshServices();
                             },
                             throwable::postValue
@@ -214,7 +215,7 @@ public class AgencyViewModel extends ViewModel implements LifecycleObserver {
                 )
             )
             .addOnFailureListener(throwable::postValue);
-    }
+    } */
 
     @OnLifecycleEvent(Event.ON_STOP)
     private void clearPending() {

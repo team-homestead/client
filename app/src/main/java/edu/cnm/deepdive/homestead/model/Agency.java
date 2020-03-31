@@ -4,7 +4,18 @@ import com.google.gson.annotations.Expose;
 import java.net.URL;
 import java.util.UUID;
 
-public class Agency implements Favorites {
+public class Agency implements Content {
+
+/*  public Agency() {
+    super();
+  }
+
+  public Agency(User[] users, AgencyType agencyType, Service[] services) {
+    super();
+    this.users = users;
+    this.agencyType = agencyType;
+    this.services = services;
+  } */
 
   @Expose
   private UUID id;
@@ -60,6 +71,28 @@ public class Agency implements Favorites {
   public void setHref(URL href) {
     this.href = href;
   }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    } if (obj == null) {
+      return false;
+    } if (getClass() != obj.getClass()) {
+      return false;
+    } Agency other = (Agency) obj;
+    if (id != other.id) {
+      return false;
+    }
+    return true;
+  }
+
+ /* @Override
+  public String toString() {
+    return "Agency [name=" + name + ", address=" + address + ", phoneNumber=" + phoneNumber +
+        ", email=" + email + ", agencyType=" + agencyType + ", services=" + services +
+        ", description=" + description + "]";
+  } */
 
   public enum AgencyType {
     GOVERNMENT, OTHER, PUBLIC, RELIGIOUS;

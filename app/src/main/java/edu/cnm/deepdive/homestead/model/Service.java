@@ -5,7 +5,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.UUID;
 
-public class Service implements Favorites {
+public class Service implements Content {
 
   @Expose
   private UUID id;

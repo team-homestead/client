@@ -5,7 +5,7 @@ import com.google.gson.annotations.Expose;
 import java.net.URL;
 import java.util.UUID;
 
-public class User implements Favorites {
+public class User implements Content {
 
   @Expose
   private UUID id;
