@@ -8,6 +8,9 @@ import android.view.MenuItem;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -25,11 +28,16 @@ public class MainActivity extends AppCompatActivity {
 
   private AppBarConfiguration mAppBarConfiguration;
 
+  private Fragment contentFragment;
+  AgenciesFragment agenciesFragment;
+  FavoritesListFragment favoritesListFragment;
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
     setupNavigation();
+
   }
 
   @Override
@@ -47,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
   public boolean onOptionsItemSelected(@NonNull MenuItem item) {
     boolean handled = true;
     switch (item.getItemId()) {
-      case R.id.sign_out:
+       case R.id.sign_out:
         signOut();
         break;
       default:
@@ -70,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
     DrawerLayout drawer = findViewById(R.id.drawer_layout);
     NavigationView navigationView = findViewById(R.id.nav_view);
     mAppBarConfiguration = new AppBarConfiguration.Builder(
-        R.id.nav_events, R.id.nav_agencies, R.id.nav_resources,
+        R.id.nav_favorites, R.id.nav_events, R.id.nav_agencies, R.id.nav_resources,
         R.id.nav_weather, R.id.nav_settings)
         .setDrawerLayout(drawer)
         .build();
@@ -87,5 +95,6 @@ public class MainActivity extends AppCompatActivity {
           startActivity(intent);
         });
   }
+
 
 }

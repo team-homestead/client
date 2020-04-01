@@ -9,6 +9,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField "String", "BASE_URL", "\"http://10.0.0.247:8080/homestead/\""
         buildConfigField "String", "CLIENT_ID", "\"352032963097-g8ebk3k7fvd2o6gf41nl6cduvptd6equ.apps.googleusercontent.com\""
 
     }

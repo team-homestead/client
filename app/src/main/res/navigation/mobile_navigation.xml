@@ -3,8 +3,14 @@
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   android:id="@+id/mobile_navigation"
-  app:startDestination="@+id/nav_events">
+  app:startDestination="@+id/nav_favorites">
   <!-- TODO change overflow_menu navigation page -->
+
+  <fragment
+    android:id="@+id/nav_favorites"
+    android:label="@string/title_favorites"
+    android:name="edu.cnm.deepdive.homestead.controller.FavoritesListFragment"
+    tools:layout="@layout/fragment_favorites_list"/>
 
   <fragment
     android:id="@+id/nav_events"
@@ -33,7 +39,6 @@
   <fragment
     android:id="@+id/nav_settings"
     android:label="@string/title_settings"
-    android:name="edu.cnm.deepdive.homestead.controller.SettingsFragment"
-    tools:layout="@layout/preferences"/>
+    android:name="edu.cnm.deepdive.homestead.controller.SettingsFragment"/>
 
 </navigation>

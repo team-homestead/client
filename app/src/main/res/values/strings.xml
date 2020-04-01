@@ -20,6 +20,13 @@
   <string name="title_weather">Homestead Weather</string>
   <string name="title_settings">Homestead Settings</string>
 
+  <string name="favorites">Favorites</string>
+  <string name="add_favr">Added to Favorites</string>
+  <string name="remove_favr">Removed from Favorites</string>
+  <string name="no_favorites_items">No Favorites</string>
+  <string name="no_favorites_msg">Long press on item to add to favorites.</string>
+  <string name="favorites_remove_msg">Long press on item to remove from favorites.</string>
+
   <string name="login_failure">Unable to login with provided credentials.</string>
   <string name="sign_out">Sign out</string>
   <string name="skip_text">Skip</string>
@@ -39,4 +46,6 @@
   <string name="attachment_summary_on">Automatically download attachments for incoming emails
   </string>
   <string name="attachment_summary_off">Only download attachments when manually requested</string>
+  <string name="menu_favorites">Agency Favorites</string>
+  <string name="title_favorites">Homestead Favorites</string>
 </resources>
