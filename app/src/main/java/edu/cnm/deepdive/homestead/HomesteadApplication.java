@@ -12,6 +12,7 @@ public class HomesteadApplication extends Application {
   public void onCreate() {
     super.onCreate();
     GoogleSignInService.setContext(this);
+    AgencyRepository.setContext(this);
     Stetho.initializeWithDefaults(this);
   }
 }

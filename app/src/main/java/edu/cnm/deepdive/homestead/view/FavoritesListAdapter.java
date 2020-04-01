@@ -69,30 +69,14 @@ public class FavoritesListAdapter extends ArrayAdapter<Agency> {
     }
     serviceTypeText.setText(builder
         .substring(0, Math.max(0, builder.length() - SERVICE_TYPE_DELIMITER.length())));
-    if (checkFavoriteItem(agency)) {
+    if (agency.isFavorite()) {
       favoriteImg.setImageResource(R.drawable.ic_heart_red);
-      favoriteImg.setTag("red");
     } else {
       favoriteImg.setImageResource(R.drawable.ic_heart_grey);
-      favoriteImg.setTag("grey");
     }
     convertView.setOnClickListener((v) -> clickListener.onAgencyClick(position, v, agency));
     favoriteImg.setOnClickListener((v) -> favoriteListener.onFavoriteClick(position, v, agency));
     return convertView;
-  }
-
-  public boolean checkFavoriteItem(Agency checkAgency) {
-    boolean check = false;
-    List<Agency> favorites = sharedPreference.getFavorites(context);
-    if (favorites != null) {
-      for (Agency agency : favorites) {
-        if (agency.equals(checkAgency)) {
-          check = true;
-          break;
-        }
-      }
-    }
-    return check;
   }
 
   public interface OnAgencyClickListener {
