@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,11 +31,9 @@ public class FavoritesListFragment extends Fragment
   public static final String ARG_ITEM_ID = "favorite_list";
 
   ListView favoritesList;
-  SharedPreference sharedPreference;
-  List<Agency> favorites;
 
   Activity activity;
-  FavoritesListAdapter favoritesListAdapter;
+  private AgencyViewModel viewModel;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
@@ -47,27 +46,13 @@ public class FavoritesListFragment extends Fragment
       Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.fragment_favorites_list, container, false);
     favoritesList = view.findViewById(R.id.favorites_list);
-    sharedPreference = new SharedPreference();
-    favorites = sharedPreference.getFavorites(activity);
-
-    if (favorites == null) {
-      showAlert(getResources().getString(R.string.no_favorites_items),
-          getResources().getString(R.string.no_favorites_msg));
-    } else {
-
-      if (favorites.size() == 0) {
-        showAlert(
-            getResources().getString(R.string.no_favorites_items),
-            getResources().getString(R.string.no_favorites_msg));
-      }
-    }
     return view;
   }
 
   @Override
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
-    AgencyViewModel viewModel = new ViewModelProvider(this).get(AgencyViewModel.class);
+    viewModel = new ViewModelProvider(this).get(AgencyViewModel.class);
     viewModel.getAgencies().observe(getViewLifecycleOwner(), (agencies) -> {
       FavoritesListAdapter adapter = new FavoritesListAdapter(getContext(), agencies, this,
           this);
@@ -98,28 +83,14 @@ public class FavoritesListFragment extends Fragment
 
   @Override
   public void onAgencyClick(int position, View view, Agency agency) {
+    Log.d(getClass().getName(), "Agency clicked");
     //TODO Respond to click on Agency by displaying ?
   }
 
   @Override
   public void onFavoriteClick(int position, View view, Agency agency) {
-    ImageButton button = (ImageButton) view;
-    String tag = button.getTag().toString();
-    if (tag.equalsIgnoreCase("grey")) {
-      sharedPreference.addFavorite(activity, agency);
-      Toast.makeText(
-          activity, activity.getResources().getString(
-              R.string.add_favr), Toast.LENGTH_SHORT).show();
-      button.setTag("red");
-      button.setImageResource(R.drawable.ic_heart_red);
-    } else {
-      sharedPreference.removeFavorite(activity, agency);
-      button.setTag("grey");
-      button.setImageResource(R.drawable.ic_heart_grey);
-     /* favoritesListAdapter.remove(agency); */
-      Toast.makeText(
-          activity, activity.getResources().getString(
-              R.string.remove_favr), Toast.LENGTH_SHORT).show();
-    }
+    Log.d(getClass().getName(), "Favorites clicked");
+    viewModel.setFavorite(agency, !agency.isFavorite());
   }
+
 }

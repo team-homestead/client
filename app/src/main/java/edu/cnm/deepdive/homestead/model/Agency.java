@@ -47,6 +47,8 @@ public class Agency implements Content {
   @Expose
   private URL href;
 
+  private boolean favorite;
+
   public UUID getId() {
     return id;
   }
@@ -125,6 +127,14 @@ public class Agency implements Content {
 
   public void setHref(URL href) {
     this.href = href;
+  }
+
+  public boolean isFavorite() {
+    return favorite;
+  }
+
+  public void setFavorite(boolean favorite) {
+    this.favorite = favorite;
   }
 
   @Override

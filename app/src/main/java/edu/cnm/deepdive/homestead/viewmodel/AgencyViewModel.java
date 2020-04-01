@@ -1,5 +1,6 @@
 package edu.cnm.deepdive.homestead.viewmodel;
 
+import android.util.Log;
 import androidx.lifecycle.Lifecycle.Event;
 import androidx.lifecycle.LifecycleObserver;
 import androidx.lifecycle.LiveData;
@@ -12,6 +13,8 @@ import edu.cnm.deepdive.homestead.model.Service;
 import edu.cnm.deepdive.homestead.service.AgencyRepository;
 import edu.cnm.deepdive.homestead.service.GoogleSignInService;
 import io.reactivex.disposables.CompositeDisposable;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
@@ -20,6 +23,7 @@ public class AgencyViewModel extends ViewModel implements LifecycleObserver {
   private MutableLiveData<Agency> agency;
   private MutableLiveData<Service> service;
   private MutableLiveData<List<Agency>> agencies;
+  private MutableLiveData<List<Agency>> favoriteAgencies;
   private MutableLiveData<List<Service>> services;
   private final MutableLiveData<Throwable> throwable;
   private final AgencyRepository repository;
@@ -29,6 +33,7 @@ public class AgencyViewModel extends ViewModel implements LifecycleObserver {
     repository = AgencyRepository.getInstance();
     pending = new CompositeDisposable();
     agencies = new MutableLiveData<>();
+    favoriteAgencies = new MutableLiveData<>();
     services = new MutableLiveData<>();
     agency = new MutableLiveData<>();
     service = new MutableLiveData<>();
@@ -49,6 +54,10 @@ public class AgencyViewModel extends ViewModel implements LifecycleObserver {
     return agencies;
   }
 
+  public LiveData<List<Agency>> getFavoriteAgencies() {
+    return favoriteAgencies;
+  }
+
   public LiveData<List<Service>> getServices() {
     return services;
   }
@@ -62,7 +71,18 @@ public class AgencyViewModel extends ViewModel implements LifecycleObserver {
     pending.add(
         repository.getAllAgencies()
             .subscribe(
-                agencies::postValue,
+                (agencies) -> {
+                  this.agencies.postValue(agencies);
+                  List<Agency> favorites = new LinkedList<>(agencies);
+                  Iterator<Agency> iter = favorites.iterator();
+                  while (iter.hasNext()) {
+                    Agency agency = iter.next();
+                    if (!agency.isFavorite()) {
+                      iter.remove();
+                    }
+                  }
+                  favoriteAgencies.postValue(favorites);
+                },
                 throwable::postValue
             )
     );
@@ -125,6 +145,19 @@ public class AgencyViewModel extends ViewModel implements LifecycleObserver {
                 throwable::postValue
             )
     );
+  }
+
+  public void setFavorite(Agency agency, boolean favorite) {
+    repository.setFavorite(agency, favorite);
+    agency.setFavorite(favorite);
+    this.agencies.setValue(this.agencies.getValue());
+    if (favorite) {
+      this.favoriteAgencies.getValue().add(agency);
+    } else {
+      this.favoriteAgencies.getValue().remove(agency);
+    }
+    this.favoriteAgencies.setValue(this.favoriteAgencies.getValue());
+    Log.d(getClass().getName(), agency.getId().toString() + " toggled to " + agency.isFavorite());
   }
 
   /*  public void save(Service service) {
