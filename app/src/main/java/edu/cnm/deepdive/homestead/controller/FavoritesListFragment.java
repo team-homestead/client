@@ -116,7 +116,7 @@ public class FavoritesListFragment extends Fragment
       sharedPreference.removeFavorite(activity, agency);
       button.setTag("grey");
       button.setImageResource(R.drawable.ic_heart_grey);
-      favoritesListAdapter.remove(agency);
+     /* favoritesListAdapter.remove(agency); */
       Toast.makeText(
           activity, activity.getResources().getString(
               R.string.remove_favr), Toast.LENGTH_SHORT).show();
