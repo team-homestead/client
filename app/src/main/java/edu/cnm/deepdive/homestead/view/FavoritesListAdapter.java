@@ -9,7 +9,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import edu.cnm.deepdive.homestead.R;
-import edu.cnm.deepdive.homestead.controller.SharedPreference;
 import edu.cnm.deepdive.homestead.model.Agency;
 import edu.cnm.deepdive.homestead.model.Service;
 import java.util.List;
@@ -18,7 +17,6 @@ public class FavoritesListAdapter extends ArrayAdapter<Agency> {
 
   private static final String SERVICE_TYPE_DELIMITER = ", ";
   private final Context context;
-  private final SharedPreference sharedPreference;
   private final OnAgencyClickListener clickListener;
   private final OnFavoriteClickListener favoriteListener;
 
@@ -29,18 +27,6 @@ public class FavoritesListAdapter extends ArrayAdapter<Agency> {
     this.context = context;
     this.clickListener = clickListener;
     this.favoriteListener = favoriteListener;
-    sharedPreference = new SharedPreference();
-  }
-
-  private class ViewHolder {
-    TextView agencyNameText;
-    TextView addressText;
-    TextView phoneNumberText;
-    TextView emailText;
-    TextView agencyTypeText;
-    TextView serviceTypeText;
-    TextView agencyDescriptionText;
-    ImageButton favoriteImg;
   }
 
   @Override
@@ -62,6 +48,26 @@ public class FavoritesListAdapter extends ArrayAdapter<Agency> {
     agencyNameText.setText(agency.getName());
     if (agency.getAgencyType() != null) {
       agencyTypeText.setText(agency.getAgencyType().toString());
+    }
+    if (agency.getAddress() != null) {
+      addressText.setText(agency.getAddress());
+    } else {
+      addressText.setVisibility(View.GONE);
+    }
+    if (agency.getPhoneNumber() != null) {
+      phoneNumberText.setText(agency.getPhoneNumber());
+    } else {
+      phoneNumberText.setVisibility(View.GONE);
+    }
+    if (agency.getEmail() != null) {
+      emailText.setText(agency.getEmail());
+    } else {
+      emailText.setVisibility(View.GONE);
+    }
+    if (agency.getDescription() != null) {
+      agencyDescriptionText.setText(agency.getDescription());
+    } else {
+      agencyDescriptionText.setVisibility(View.GONE);
     }
     StringBuilder builder = new StringBuilder();
     for (Service service : agency.getServices()) {

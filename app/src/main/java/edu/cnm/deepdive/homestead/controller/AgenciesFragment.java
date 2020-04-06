@@ -2,6 +2,7 @@ package edu.cnm.deepdive.homestead.controller;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,16 +12,20 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import edu.cnm.deepdive.homestead.R;
 import edu.cnm.deepdive.homestead.model.Agency;
 import edu.cnm.deepdive.homestead.view.FavoritesListAdapter;
 import edu.cnm.deepdive.homestead.view.FavoritesListAdapter.OnAgencyClickListener;
 import edu.cnm.deepdive.homestead.view.FavoritesListAdapter.OnFavoriteClickListener;
+import edu.cnm.deepdive.homestead.viewmodel.AgencyViewModel;
 import java.util.List;
 
 public class AgenciesFragment extends Fragment implements
-    OnItemClickListener, OnItemLongClickListener, OnAgencyClickListener, OnFavoriteClickListener {
+    OnItemClickListener, /*OnItemLongClickListener, */ OnAgencyClickListener, OnFavoriteClickListener {
 
     public static final String ARG_ITEM_ID = "agency_list";
 
@@ -28,14 +33,12 @@ public class AgenciesFragment extends Fragment implements
     ListView agencyListView;
     List<Agency> agencies;
     FavoritesListAdapter agencyListAdapter;
-
-    SharedPreference sharedPreference;
+    private AgencyViewModel viewModel;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activity = getActivity();
-        sharedPreference = new SharedPreference();
     }
 
     @Override
@@ -43,13 +46,21 @@ public class AgenciesFragment extends Fragment implements
         LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_agencies, container, false);
         findViewsById(view);
-        agencyListAdapter = new FavoritesListAdapter(activity, agencies, this,
-            this);
-        agencyListView.setAdapter(agencyListAdapter);
-        agencyListView.setOnItemClickListener(this);
-        agencyListView.setOnItemLongClickListener(this);
-        return view;
+
+            return view;
     }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        viewModel = new ViewModelProvider(this).get(AgencyViewModel.class);
+        viewModel.getAgencies().observe(getViewLifecycleOwner(), (agencies) -> {
+            FavoritesListAdapter adapter = new FavoritesListAdapter(getContext(), agencies, this,
+                this);
+            agencyListView.setAdapter(adapter);
+        });
+    }
+
 
     private void findViewsById(View view) {
         agencyListView = (ListView) view.findViewById(R.id.agencies_list);
@@ -61,7 +72,7 @@ public class AgenciesFragment extends Fragment implements
         Toast.makeText(activity, agency.toString(), Toast.LENGTH_LONG).show();
     }
 
-    @Override
+  /*  @Override
     public boolean onItemLongClick(AdapterView<?> arg0, View view, int position, long arg3) {
         ImageButton button = (ImageButton) view.findViewById(R.id.agency_favorite_button);
         String tag = button.getTag().toString();
@@ -80,22 +91,18 @@ public class AgenciesFragment extends Fragment implements
         }
 
         return true;
-    }
-
-    @Override
-    public void onResume() {
-        getActivity().setTitle(R.string.app_name);
-        getActivity().getActionBar().setTitle(R.string.app_name);
-        super.onResume();
-    }
+    } */
 
     @Override
     public void onAgencyClick(int position, View view, Agency agency) {
-
+        Log.d(getClass().getName(), "Agency clicked");
+        //TODO Respond to click on Agency by displaying ?
     }
 
     @Override
     public void onFavoriteClick(int position, View view, Agency agency) {
-
+        Log.d(getClass().getName(), "Favorites clicked");
+        viewModel.setFavorite(agency, !agency.isFavorite());
     }
+
 }
