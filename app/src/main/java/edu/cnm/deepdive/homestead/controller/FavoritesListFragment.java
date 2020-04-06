@@ -53,7 +53,7 @@ public class FavoritesListFragment extends Fragment
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
     viewModel = new ViewModelProvider(this).get(AgencyViewModel.class);
-    viewModel.getAgencies().observe(getViewLifecycleOwner(), (agencies) -> {
+    viewModel.getFavoriteAgencies().observe(getViewLifecycleOwner(), (agencies) -> {
       FavoritesListAdapter adapter = new FavoritesListAdapter(getContext(), agencies, this,
           this);
       favoritesList.setAdapter(adapter);

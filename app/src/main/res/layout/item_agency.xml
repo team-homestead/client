@@ -38,12 +38,13 @@
 
     <TextView
       android:id="@+id/agency_address"
-      android:layout_width="wrap_content"
+      android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:padding="6dp"
       android:textSize="10sp"
       app:layout_constraintTop_toBottomOf="@id/horizontal_barrier1"
-      app:layout_constraintStart_toStartOf="parent"/>
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintEnd_toStartOf="@+id/agency_phone_number"/>
 
     <TextView
       android:id="@+id/agency_phone_number"
@@ -56,12 +57,13 @@
 
     <TextView
       android:id="@+id/agency_email"
-      android:layout_width="wrap_content"
+      android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:padding="6dp"
       android:textSize="10sp"
       app:layout_constraintTop_toBottomOf="@id/agency_address"
-      app:layout_constraintStart_toStartOf="parent"/>
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintEnd_toStartOf="@+id/agency_type"/>
 
     <TextView
       android:id="@+id/agency_type"
@@ -81,7 +83,7 @@
 
     <TextView
       android:id="@+id/agency_service_type"
-      android:layout_width="wrap_content"
+      android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:padding="6dp"
       android:textSize="10sp"
@@ -91,7 +93,7 @@
 
     <TextView
       android:id="@+id/agency_description"
-      android:layout_width="wrap_content"
+      android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:padding="6dp"
       android:textSize="10sp"

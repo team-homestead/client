@@ -8,6 +8,7 @@ import edu.cnm.deepdive.homestead.model.Agency;
 import edu.cnm.deepdive.homestead.model.Service;
 import io.reactivex.Completable;
 import io.reactivex.Single;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
@@ -34,8 +35,15 @@ public interface HomesteadService {
   @GET("agencies/{id}")
   Single<Agency> getAgency(@Path("id") UUID id);
 
+  @GET("service-types")
+  Single<List<String>> getServiceTypes();
+
   @GET("services")
   Single<List<Service>> getAllServices();
+
+  @GET("agencies/search")
+  Single<List<Agency>> search(@Query("q") String fragment, @Query("service-type") String type);
+
 
   @POST("agencies")
   Single<Agency> postAgency(@Header("Authorization") String oauthHeader, @Body Agency agency);

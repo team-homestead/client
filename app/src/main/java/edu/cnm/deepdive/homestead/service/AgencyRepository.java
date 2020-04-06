@@ -5,15 +5,12 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import androidx.preference.PreferenceManager;
 import edu.cnm.deepdive.homestead.model.Agency;
-import edu.cnm.deepdive.homestead.model.Content;
 import edu.cnm.deepdive.homestead.model.Service;
 import io.reactivex.Completable;
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -61,6 +58,23 @@ public class AgencyRepository {
           }
           return agencies;
         });
+  }
+
+  public Single<List<Agency>> searchAgencies(String fragment, String serviceType) {
+    return proxy.search(fragment, serviceType)
+        .subscribeOn(Schedulers.from(networkPool))
+        .map((agencies) -> {
+          Set<String> favorites = getFavorites();
+          for (Agency agency : agencies) {
+            agency.setFavorite(favorites.contains(agency.getId().toString()));
+          }
+          return agencies;
+        });
+  }
+
+  public Single<List<String>> getServiceTypes() {
+    return proxy.getServiceTypes()
+        .subscribeOn(Schedulers.from(networkPool));
   }
 
   public Single<List<Service>> getAllServices() {

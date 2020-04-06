@@ -48,4 +48,6 @@
   <string name="attachment_summary_off">Only download attachments when manually requested</string>
   <string name="menu_favorites">Agency Favorites</string>
   <string name="title_favorites">Homestead Favorites</string>
+  <string name="title_agency_search">Homestead Search</string>
+  <string name="menu_agency_search">Agency Search</string>
 </resources>

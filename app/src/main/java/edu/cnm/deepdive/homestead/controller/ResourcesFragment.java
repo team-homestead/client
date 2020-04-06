@@ -31,4 +31,59 @@ public class ResourcesFragment extends Fragment {
     });
     return root;
   }
+
+    /*  public void save(Service service) {
+        throwable.setValue(null);
+        GoogleSignInService.getInstance().refresh()
+            .addOnSuccessListener((account) -> {
+                pending.add(
+                    repository.saveService(account.getIdToken(), service)
+                        .subscribe(
+                            () -> {
+                                this.service.postValue(null);
+                                refreshContents();
+                                refreshAgencies();
+                                refreshServices();
+                            },
+                            throwable::postValue
+                        )
+                );
+            })
+            .addOnFailureListener(throwable::postValue);
+    }
+
+    public void remove(Service service) {
+        throwable.setValue(null);
+        GoogleSignInService.getInstance().refresh()
+            .addOnSuccessListener((account) -> {
+                pending.add(
+                    repository.removeAgency(account.getIdToken(), service)
+                        .subscribe(
+                            () -> {
+                                this.service.postValue(null);
+                                refreshContents();
+                                refreshServices();
+                            },
+                            throwable::postValue
+                        )
+                );
+            })
+            .addOnFailureListener(throwable::postValue);
+    }
+
+    public void setServiceId(UUID id) {
+        throwable.setValue(null);
+        GoogleSignInService.getInstance().refresh()
+            .addOnSuccessListener(
+                (account) -> pending.add(
+                    repository.get(account.getIdToken(), id)
+                        .subscribe(
+                            service::postValue,
+                            throwable::postValue
+                        )
+                )
+            )
+            .addOnFailureListener(throwable::postValue);
+    } */
+
 }
